@@ -12,25 +12,16 @@ class TestBun:
     ])
     def test_bun_creation(self, name, price):
         bun = Bun(name, price)
-        assert bun.name == name
-        assert bun.price == price
+        assert bun.get_name() == name
+        assert bun.get_price() == price
 
     @allure.title('Тест метода get_name')
     def test_get_name(self, bun_fixture):
         assert bun_fixture.get_name() == "Classic Bun"
 
-    # Тест метода get_price
     @allure.title('Тест метода get_price')
     def test_get_price(self, bun_fixture):
         assert bun_fixture.get_price() == 199
-
-
-    @allure.title('Негативная проверка поля Цена: отрицательные и не отрицательное числа')
-    @pytest.mark.parametrize("price", [-10, 0, -55])
-    def test_invalid_price(self, price):
-        bun = Bun(name="Invalid Bun", price=price)
-        assert bun.price == price
-        assert bun.price <= 0
 
     @allure.title('Проверка изменения названия булочки')
     def test_set_name(self, bun_fixture):
@@ -42,7 +33,7 @@ class TestBun:
         bun_fixture.price = 255
         assert bun_fixture.get_price() == 255
 
-    @allure.title('Негативная Проверка на поле Имя: значение цены не является строкой')
+    @allure.title('Негативная Проверка на поле Имя: значение name не является строкой')
     @pytest.mark.parametrize("invalid_name, price", [
         (1, 199),
         (None, 599),
@@ -59,3 +50,10 @@ class TestBun:
     def test_bun_creation_with_invalid_price(self, name, invalid_price):
         bun = Bun(name, invalid_price)
         assert not isinstance(bun.get_price(), (int, float))
+
+    @allure.title('Негативная проверка поля Цена: отрицательные и не отрицательное числа')
+    @pytest.mark.parametrize("price", [-10, 0, -55])
+    def test_invalid_price(self, price):
+        bun = Bun(name="Invalid Bun", price=price)
+        assert bun.price == price
+        assert bun.price <= 0
